@@ -13,20 +13,30 @@ namespace StandardChain.Tests
         {
             var transaction = GivenATransactionToStore(23.2m, "Robert");
             var blockChain = GivenABlockchain<TestTransaction>();
-            blockChain.AddBlock(transaction, new DateTime(2017, 01, 01));
+            blockChain.AddBlockFromTransaction(transaction, new DateTime(2017, 01, 01));
 
 
-            var jsonRepresentation = blockChain.Serialise();
+            var jsonRepresentation = blockChain.Serialised();
 
 
-            Assert.AreEqual("", jsonRepresentation);
+            Assert.AreEqual(
+                "[{\"TimeStamp\":\"2017-01-01T00:00:00\",\"Transaction\":{\"Amount\":23.2,\"Purchaser\":\"Robert\"},\"PreviousHash\":\"StandardChain\"}]",
+                jsonRepresentation);
+        }
+
+        [TestMethod]
+        public void TestBlockchainCanBeRestoredFromJson()
+        {
+            var serialisedJson = "[{\"TimeStamp\":\"2017-01-01T00:00:00\",\"Transaction\":{\"Amount\":23.2,\"Purchaser\":\"Robert\"},\"PreviousHash\":\"StandardChain\"}]";
+
+            var restoredBlockchain = GivenABlockchain<TestTransaction>().FilledFromExistingChain(serialisedJson);
         }
 
         #region Givens
 
         private Blockchain<T> GivenABlockchain<T>()
         {
-            return new Blockchain<T>(SHA512.Create());
+            return new Blockchain<T>(GivenAHasher());
         }
 
         private TestTransaction GivenATransactionToStore(decimal amount, string purchaser)
@@ -36,6 +46,11 @@ namespace StandardChain.Tests
                 Amount = amount,
                 Purchaser = purchaser
             };
+        }
+
+        private HashAlgorithm GivenAHasher()
+        {
+            return SHA512.Create();
         }
 
         #endregion

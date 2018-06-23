@@ -1,16 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 
 namespace StandardChain
 {
     public class Blockchain<T>
     {
-        private Block<T> _lastBlock => _chain.LastOrDefault();
-
-        private readonly IList<Block<T>> _chain;
+        private readonly BlockList<T> _blockList;
         private readonly HashAlgorithm _hasher;
 
         public Blockchain(HashAlgorithm hasher)
@@ -18,34 +15,38 @@ namespace StandardChain
             if (hasher == null) throw new ArgumentNullException(nameof(hasher));
 
             _hasher = hasher;
-            _chain = new List<Block<T>>();
+            _blockList = new BlockList<T>();
         }
 
-        public Blockchain(string serialisedChain)
+        public Blockchain<T> FilledFromExistingChain(string serialisedChain)
         {
+            if (!_blockList.Empty) throw new InvalidBlockchainException("Cannot restore if already populated");
+
             var chain = JsonConvert.DeserializeObject<IList<Block<T>>>(serialisedChain);
             BlockHash lastHash = null;
-            foreach(var block in chain)
+            foreach (var block in chain)
             {
                 var blockHash = block.Hash(_hasher);
                 if (lastHash != null && blockHash != lastHash) throw new InvalidBlockchainException();
 
-                chain.Add(block);
+                _blockList.AddBlock(block);
 
                 lastHash = blockHash;
             }
+            return this;
         }
 
-        public void AddBlock(T transaction, DateTime timeStamp)
+        public void AddBlockFromTransaction(T transaction, DateTime timeStamp)
         {
-            var hash = _lastBlock?.Hash(_hasher);
+            var hash = _blockList.LastBlock?.Hash(_hasher) ?? BlockHash.Empty;
             var block = new Block<T>(transaction, timeStamp, hash);
-            _chain.Add(block);
+
+            _blockList.AddBlock(block);
         }
 
-        public string Serialise()
+        public string Serialised()
         {
-            return JsonConvert.SerializeObject(_chain);
+            return JsonConvert.SerializeObject(_blockList.Blocks);
         }
     }
 }

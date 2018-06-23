@@ -5,14 +5,18 @@ namespace StandardChain
 {
     public class BlockHash
     {
-        public string Value { get; }
-        
-        public BlockHash(byte[] hashBytes)
-        {
-            if (hashBytes == null) throw new ArgumentNullException(nameof(hashBytes));
-            if (hashBytes.Length == 0) throw new ArgumentException("Cannot have empty hash", nameof(hashBytes));
+        public static BlockHash Empty = new BlockHash("StandardChain");
 
-            Value = BitConverter.ToString(hashBytes);
+        public string Value { get; }
+
+        public BlockHash(string hash)
+        {
+            if (string.IsNullOrEmpty(hash)) throw new ArgumentException("Hash cannot be null or empty", nameof(hash));
+            Value = hash;
+        }
+
+        public BlockHash(byte[] hashBytes) : this(BitConverter.ToString(hashBytes))
+        {
         }
 
         public override bool Equals(object obj)

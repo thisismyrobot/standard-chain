@@ -1,37 +1,42 @@
 ﻿using Newtonsoft.Json;
-using StandardChain.Dto;
 using System;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace StandardChain
 {
+    [JsonObject(MemberSerialization.OptIn)]
     internal class Block<T>
     {
-        private readonly string _blockString;
+        [JsonProperty]
+        internal DateTime TimeStamp { get; }
 
-        public Block(T transaction, DateTime timeStamp, BlockHash hash)
+        [JsonProperty]
+        internal T Transaction { get; }
+
+        [JsonProperty]
+        internal string PreviousHash { get; }
+
+        internal Block(T transaction, DateTime timeStamp, BlockHash previousHash)
         {
-            if (hash == null) throw new ArgumentNullException(nameof(hash));
+            if (previousHash == null) throw new ArgumentNullException(nameof(previousHash));
 
-            var blockDto = new BlockDto
-            {
-                TimeStamp = timeStamp,
-                Transaction = JsonConvert.SerializeObject(transaction),
-                Hash = hash.Value,
-            };
-            _blockString = JsonConvert.SerializeObject(blockDto);
+            TimeStamp = timeStamp;
+            Transaction = transaction;
+            PreviousHash = previousHash.Value;
         }
 
-        public BlockHash Hash(HashAlgorithm hasher)
+        [JsonConstructor]
+        internal Block(T transaction, DateTime timeStamp, string previousHash) :
+            this(transaction, timeStamp, new BlockHash(previousHash))
         {
-            var hashBytes = hasher.ComputeHash(Encoding.UTF8.GetBytes(_blockString));
+        }
+
+        internal BlockHash Hash(HashAlgorithm hasher)
+        {
+            var blockAsJson = JsonConvert.SerializeObject(this);
+            var hashBytes = hasher.ComputeHash(Encoding.UTF8.GetBytes(blockAsJson));
             return new BlockHash(hashBytes);
-        }
-
-        public string Serialise()
-        {
-            return _blockString;
         }
     }
 }
