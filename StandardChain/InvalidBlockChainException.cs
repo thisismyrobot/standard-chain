@@ -3,17 +3,17 @@
 namespace StandardChain
 {
     [Serializable]
-    internal class InvalidBlockChainException : Exception
+    internal class InvalidBlockchainException : Exception
     {
-        public InvalidBlockChainException()
+        public InvalidBlockchainException()
         {
         }
 
-        public InvalidBlockChainException(string message) : base(message)
+        public InvalidBlockchainException(string message) : base(message)
         {
         }
 
-        public InvalidBlockChainException(string message, Exception innerException) : base(message, innerException)
+        public InvalidBlockchainException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }
