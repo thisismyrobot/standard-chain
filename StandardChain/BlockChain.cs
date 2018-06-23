@@ -11,26 +11,26 @@ namespace StandardChain
 {
     public class Blockchain<T>
     {
-        private readonly BlockList<T> _blockList;
+        private readonly BlockStack<T> _blockStack;
         private readonly HashAlgorithm _hashAlgorithm;
 
-        public IReadOnlyList<IBlockchainRecord<T>> History => (IReadOnlyList<IBlockchainRecord<T>>)_blockList.Blocks;
-        public int Length => _blockList.Length;
+        public IReadOnlyList<IBlockchainRecord<T>> History => _blockStack.InCreationOrder.ToArray();
+        public int Length => _blockStack.Length;
 
         public Blockchain(HashAlgorithm hashAlgorithm)
         {
             if (hashAlgorithm == null) throw new ArgumentNullException(nameof(hashAlgorithm));
 
             _hashAlgorithm = hashAlgorithm;
-            _blockList = new BlockList<T>();
+            _blockStack = new BlockStack<T>();
         }
 
         public void AddBlock(T payload, DateTime timeStamp)
         {
-            var previousHash = _blockList.Empty ? BlockHash.FirstBlock : _blockList.LastBlock.Hash(_hashAlgorithm);
+            var previousHash = _blockStack.Empty ? BlockHash.FirstBlock : _blockStack.LastBlock.Hash(_hashAlgorithm);
             var block = new Block<T>(payload, timeStamp, previousHash);
 
-            _blockList.AddBlock(block);
+            _blockStack.AddBlock(block);
         }
 
         internal void RestoreBlockSequence(IEnumerable<Block<T>> blocks)
@@ -39,7 +39,7 @@ namespace StandardChain
 
             foreach (var block in blocks)
             {
-                var expectedPreviousHash = _blockList.Empty ? BlockHash.FirstBlock : _blockList.LastBlock.Hash(_hashAlgorithm);
+                var expectedPreviousHash = _blockStack.Empty ? BlockHash.FirstBlock : _blockStack.LastBlock.Hash(_hashAlgorithm);
                 if (!block.PreviousHash.Equals(expectedPreviousHash)) throw new InvalidBlockchainException();
 
                 AddBlock(block.Payload, block.TimeStamp);
@@ -48,7 +48,10 @@ namespace StandardChain
 
         public string Serialised()
         {
-            return JsonConvert.SerializeObject(_blockList.Blocks.Select(SerialisableBlockConverters<T>.FromBlock));
+            var orderedBlocks = _blockStack
+                .InCreationOrder
+                .Select(SerialisableBlockConverters<T>.FromBlock);
+            return JsonConvert.SerializeObject(orderedBlocks);
         }
     }
 }

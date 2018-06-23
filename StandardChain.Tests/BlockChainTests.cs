@@ -36,9 +36,17 @@ namespace StandardChain.Tests
             var jsonRepresentation = blockChain.Serialised();
 
 
+            // Oldest history is accessable first.
+            Assert.AreEqual(new DateTime(2017, 01, 01), blockChain.History[0].TimeStamp);
+            Assert.AreEqual(new DateTime(2017, 01, 02), blockChain.History[1].TimeStamp);
+            Assert.AreEqual(new DateTime(2017, 01, 03), blockChain.History[2].TimeStamp);
+            Assert.AreEqual(23.2m, blockChain.History[0].Payload.Amount);
+            Assert.AreEqual(12.6m, blockChain.History[1].Payload.Amount);
+            Assert.AreEqual(47.2m, blockChain.History[2].Payload.Amount);
+
             Assert.AreEqual(blockChain.Length, 3);
         }
-        
+
         [TestMethod]
         public void TestBlockchainCanBeRestoredFromJson()
         {
