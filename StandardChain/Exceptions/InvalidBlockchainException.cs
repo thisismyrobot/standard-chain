@@ -3,7 +3,7 @@
 namespace StandardChain.Exceptions
 {
     [Serializable]
-    internal class InvalidBlockchainException : Exception
+    public class InvalidBlockchainException : Exception
     {
         public InvalidBlockchainException()
         {
