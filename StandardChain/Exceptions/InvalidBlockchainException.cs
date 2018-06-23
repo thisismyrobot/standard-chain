@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StandardChain
+namespace StandardChain.Exceptions
 {
     [Serializable]
     internal class InvalidBlockchainException : Exception

@@ -1,6 +1,10 @@
 ﻿using Newtonsoft.Json;
+using StandardChain.Exceptions;
+using StandardChain.Interfaces;
+using StandardChain.Serialisation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace StandardChain
@@ -8,45 +12,43 @@ namespace StandardChain
     public class Blockchain<T>
     {
         private readonly BlockList<T> _blockList;
-        private readonly HashAlgorithm _hasher;
+        private readonly HashAlgorithm _hashAlgorithm;
 
-        public Blockchain(HashAlgorithm hasher)
+        public IReadOnlyList<IBlockchainRecord<T>> History => (IReadOnlyList<IBlockchainRecord<T>>)_blockList.Blocks;
+        public int Length => _blockList.Length;
+
+        public Blockchain(HashAlgorithm hashAlgorithm)
         {
-            if (hasher == null) throw new ArgumentNullException(nameof(hasher));
+            if (hashAlgorithm == null) throw new ArgumentNullException(nameof(hashAlgorithm));
 
-            _hasher = hasher;
+            _hashAlgorithm = hashAlgorithm;
             _blockList = new BlockList<T>();
         }
 
-        public Blockchain<T> FilledFromExistingChain(string serialisedChain)
+        public void AddBlock(T payload, DateTime timeStamp)
         {
-            if (!_blockList.Empty) throw new InvalidBlockchainException("Cannot restore if already populated");
-
-            var chain = JsonConvert.DeserializeObject<IList<Block<T>>>(serialisedChain);
-            BlockHash lastHash = null;
-            foreach (var block in chain)
-            {
-                var blockHash = block.Hash(_hasher);
-                if (lastHash != null && blockHash != lastHash) throw new InvalidBlockchainException();
-
-                _blockList.AddBlock(block);
-
-                lastHash = blockHash;
-            }
-            return this;
-        }
-
-        public void AddBlockFromTransaction(T transaction, DateTime timeStamp)
-        {
-            var hash = _blockList.LastBlock?.Hash(_hasher) ?? BlockHash.Empty;
-            var block = new Block<T>(transaction, timeStamp, hash);
+            var previousHash = _blockList.Empty ? BlockHash.FirstBlock : _blockList.LastBlock.Hash(_hashAlgorithm);
+            var block = new Block<T>(payload, timeStamp, previousHash);
 
             _blockList.AddBlock(block);
         }
 
+        internal void RestoreBlockSequence(IEnumerable<Block<T>> blocks)
+        {
+            if (blocks == null) throw new ArgumentNullException(nameof(blocks));
+
+            foreach (var block in blocks)
+            {
+                var expectedPreviousHash = _blockList.Empty ? BlockHash.FirstBlock : _blockList.LastBlock.Hash(_hashAlgorithm);
+                if (!block.PreviousHash.Equals(expectedPreviousHash)) throw new InvalidBlockchainException();
+
+                AddBlock(block.Payload, block.TimeStamp);
+            }
+        }
+
         public string Serialised()
         {
-            return JsonConvert.SerializeObject(_blockList.Blocks);
+            return JsonConvert.SerializeObject(_blockList.Blocks.Select(SerialisableBlockConverters<T>.FromBlock));
         }
     }
 }

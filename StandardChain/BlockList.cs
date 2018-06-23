@@ -9,7 +9,9 @@ namespace StandardChain
 
         internal Block<T> LastBlock { get; private set; }
         internal bool Empty { get; private set; } = true;
+
         internal IReadOnlyList<Block<T>> Blocks => (IReadOnlyList<Block<T>>)_blocks;
+        internal int Length => _blocks.Count;
 
         internal BlockList()
         {
@@ -19,6 +21,7 @@ namespace StandardChain
         internal void AddBlock(Block<T> block)
         {
             if (block == null) throw new ArgumentNullException(nameof(block));
+
             _blocks.Add(block);
             LastBlock = block;
             Empty = false;
