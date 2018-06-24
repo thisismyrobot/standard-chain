@@ -15,6 +15,7 @@ namespace StandardChain
         private readonly HashAlgorithm _hashAlgorithm;
 
         public IReadOnlyList<IBlockchainRecord<T>> History => _blockStack.InCreationOrder.ToArray();
+        public BlockHash LastBlockHash => _blockStack.LastBlock.Hash(_hashAlgorithm);
         public int Length => _blockStack.Length;
 
         public Blockchain(HashAlgorithm hashAlgorithm)
@@ -52,6 +53,15 @@ namespace StandardChain
                 .InCreationOrder
                 .Select(SerialisableBlockConverters<T>.FromBlock);
             return JsonConvert.SerializeObject(orderedBlocks);
+        }
+
+        public bool IsAuthorative(Blockchain<T> candidate)
+        {
+            if (Length > candidate.Length) return true;
+
+            if (Length == candidate.Length && candidate.LastBlockHash.Equals(LastBlockHash)) return true;
+
+            return false;
         }
     }
 }
