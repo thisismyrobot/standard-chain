@@ -5,6 +5,8 @@ Standard.
 
 Based on https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
 
+This is a blockchain domain model, not a blockchain service.
+
 ## Usage
 
 The intended usage is in a centralised server architecture where multiple
