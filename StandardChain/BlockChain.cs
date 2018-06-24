@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using StandardChain.Exceptions;
+﻿using StandardChain.Exceptions;
 using StandardChain.Interfaces;
-using StandardChain.Serialisation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +12,12 @@ namespace StandardChain
         private readonly BlockStack<T> _blockStack;
         private readonly HashAlgorithm _hashAlgorithm;
 
-        public IReadOnlyList<IBlockchainRecord<T>> History => _blockStack.InCreationOrder.ToArray();
-        public BlockHash LastBlockHash => _blockStack.LastBlock.Hash(_hashAlgorithm);
+        internal IReadOnlyList<Block<T>> BlocksInCreationOrder => _blockStack.InCreationOrder.ToArray();
+
+        public IReadOnlyList<IBlockchainRecord<T>> HistoryInCreationOrder => _blockStack.InCreationOrder.ToArray();
+        public BlockHash LastBlockHash => _blockStack.LastBlock?.Hash(_hashAlgorithm);
         public int Length => _blockStack.Length;
+        public bool Empty => _blockStack.Empty;
 
         public Blockchain(HashAlgorithm hashAlgorithm)
         {
@@ -34,19 +35,6 @@ namespace StandardChain
             _blockStack.AddBlock(block);
         }
 
-        internal void RestoreBlockSequence(IEnumerable<Block<T>> blocks)
-        {
-            if (blocks == null) throw new ArgumentNullException(nameof(blocks));
-
-            foreach (var block in blocks)
-            {
-                var expectedPreviousHash = _blockStack.Empty ? BlockHash.FirstBlock : _blockStack.LastBlock.Hash(_hashAlgorithm);
-                if (!block.PreviousHash.Equals(expectedPreviousHash)) throw new InvalidBlockchainException();
-
-                AddBlock(block.Payload, block.TimeStamp);
-            }
-        }
-
         public bool IsAuthorative(Blockchain<T> candidate)
         {
             if (candidate == null) throw new ArgumentNullException(nameof(candidate));
@@ -58,12 +46,16 @@ namespace StandardChain
             return false;
         }
 
-        public string Serialised()
+        internal void AddExistingBlock(Block<T> block)
         {
-            var orderedBlocks = _blockStack
-                .InCreationOrder
-                .Select(SerialisableBlockConverters<T>.FromBlock);
-            return JsonConvert.SerializeObject(orderedBlocks);
+            if (block == null) throw new ArgumentNullException(nameof(block));
+
+            // Each new block should have a "previous hash" that matches the hash of the blockchain's last
+            // added block. If it doesn't it isn't a legitimate existing block.
+            var expectedPreviousHash = Empty ? BlockHash.FirstBlock : LastBlockHash;
+            if (!block.PreviousHash.Equals(expectedPreviousHash)) throw new InvalidBlockException();
+
+            AddBlock(block.Payload, block.TimeStamp);
         }
     }
 }

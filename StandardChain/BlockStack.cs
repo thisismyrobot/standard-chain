@@ -8,7 +8,7 @@ namespace StandardChain
     {
         private readonly Stack<Block<T>> _blockStack;
 
-        internal Block<T> LastBlock => _blockStack.Peek();
+        internal Block<T> LastBlock => Empty ? null : _blockStack.Peek();
         internal int Length => _blockStack.Count;
         internal bool Empty => Length == 0;
         internal IEnumerable<Block<T>> InCreationOrder => _blockStack.Reverse();

@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="BlockchainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialisation\BlockchainFactoryTests.cs" />
+    <Compile Include="Serialisation\BlockchainSerialiserTests.cs" />
     <Compile Include="TestClasses\TestTransaction.cs" />
   </ItemGroup>
   <ItemGroup>
