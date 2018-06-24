@@ -1,22 +1,21 @@
 ﻿using System.Security.Cryptography;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace StandardChain.Tests
 {
-    [TestClass]
     public class BlockchainFactoryTests
     {   
-        [TestMethod]
+        [Fact]
         public void TestBlockchainCanBeRestoredFromJson()
         {
             var serialisedJson = "[{\"Timestamp\":\"2017-01-01T00:00:00\",\"Payload\":{\"Amount\":23.2,\"Purchaser\":\"Robert\"},\"PreviousHashValue\":\"StandardChain\"}]";
 
             var restoredBlockchain = GivenABlockchainFrom<TestTransaction>(serialisedJson);
 
-            Assert.AreEqual(1, restoredBlockchain.Length);
+            Assert.Equal(1, restoredBlockchain.Length);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestBlockchainIsValidatedWhenRestoredFromJson()
         {
             // The last hash should be "0BE9468F6431F9D8C1E73369CB3B20C6"
@@ -40,7 +39,7 @@ namespace StandardChain.Tests
                 ]
             ";
 
-            Assert.ThrowsException<InvalidBlockException>(() =>
+            Assert.Throws<InvalidBlockException>(() =>
             {
                 GivenABlockchainFrom<int>(invalidJson);
             });

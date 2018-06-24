@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Security.Cryptography;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace StandardChain.Tests
 {
-    [TestClass]
     public class BlockHashTests
     {
-        [TestMethod]
+        [Fact]
         public void TestBlockHashesImplementEquals()
         {
-            Assert.IsTrue(GivenBlockHashFrom("a").Equals(GivenBlockHashFrom("a")));
-            Assert.IsFalse(GivenBlockHashFrom("a").Equals(GivenBlockHashFrom("b")));
+            Assert.True(GivenBlockHashFrom("a").Equals(GivenBlockHashFrom("a")));
+            Assert.False(GivenBlockHashFrom("a").Equals(GivenBlockHashFrom("b")));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestBlockHashesImplementEqualsOperator()
         {
-            Assert.IsTrue(GivenBlockHashFrom("a") == GivenBlockHashFrom("a"));
-            Assert.IsFalse(GivenBlockHashFrom("a") == GivenBlockHashFrom("b"));
+            Assert.True(GivenBlockHashFrom("a") == GivenBlockHashFrom("a"));
+            Assert.False(GivenBlockHashFrom("a") == GivenBlockHashFrom("b"));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestBlockHashesImplementNotEqualsOperator()
         {
-            Assert.IsFalse(GivenBlockHashFrom("a") != GivenBlockHashFrom("a"));
-            Assert.IsTrue(GivenBlockHashFrom("a") != GivenBlockHashFrom("b"));
+            Assert.False(GivenBlockHashFrom("a") != GivenBlockHashFrom("a"));
+            Assert.True(GivenBlockHashFrom("a") != GivenBlockHashFrom("b"));
         }
 
         #region Givens

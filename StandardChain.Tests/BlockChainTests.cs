@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Security.Cryptography;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace StandardChain.Tests
 {
-    [TestClass]
     public class BlockchainTests
     {
-        [TestMethod]
+        [Fact]
         public void TestBlockchainCanHaveMultipleTransactions()
         {
             var blockChain = GivenABlockchain<TestTransaction>();
@@ -17,14 +16,14 @@ namespace StandardChain.Tests
 
 
             // Oldest history is accessable first.
-            Assert.AreEqual(new DateTime(2017, 01, 01), blockChain.HistoryInCreationOrder[0].Timestamp);
-            Assert.AreEqual(new DateTime(2017, 01, 02), blockChain.HistoryInCreationOrder[1].Timestamp);
-            Assert.AreEqual(new DateTime(2017, 01, 03), blockChain.HistoryInCreationOrder[2].Timestamp);
-            Assert.AreEqual(23.2m, blockChain.HistoryInCreationOrder[0].Payload.Amount);
-            Assert.AreEqual(12.6m, blockChain.HistoryInCreationOrder[1].Payload.Amount);
-            Assert.AreEqual(47.2m, blockChain.HistoryInCreationOrder[2].Payload.Amount);
+            Assert.Equal(new DateTime(2017, 01, 01), blockChain.HistoryInCreationOrder[0].Timestamp);
+            Assert.Equal(new DateTime(2017, 01, 02), blockChain.HistoryInCreationOrder[1].Timestamp);
+            Assert.Equal(new DateTime(2017, 01, 03), blockChain.HistoryInCreationOrder[2].Timestamp);
+            Assert.Equal(23.2m, blockChain.HistoryInCreationOrder[0].Payload.Amount);
+            Assert.Equal(12.6m, blockChain.HistoryInCreationOrder[1].Payload.Amount);
+            Assert.Equal(47.2m, blockChain.HistoryInCreationOrder[2].Payload.Amount);
 
-            Assert.AreEqual(blockChain.Length, 3);
+            Assert.Equal(3, blockChain.Length);
         }
 
         #region Givens

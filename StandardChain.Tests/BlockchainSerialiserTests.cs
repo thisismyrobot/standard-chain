@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Security.Cryptography;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace StandardChain.Tests
 {
-    [TestClass]
     public class BlockchainSerialiserTests
     {
-        [TestMethod]
+        [Fact]
         public void TestBlockchainCanBeSerialisedToJson()
         {
             var transaction = GivenATransactionToStore(23.2m, "Robert");
@@ -19,7 +18,7 @@ namespace StandardChain.Tests
             var jsonRepresentation = blockchainSerialiser.Serialise(blockChain);
 
 
-            Assert.AreEqual(
+            Assert.Equal(
                 "[{\"Timestamp\":\"2017-01-01T00:00:00\",\"Payload\":{\"Amount\":23.2,\"Purchaser\":\"Robert\"},\"PreviousHashValue\":\"StandardChain\"}]",
                 jsonRepresentation);
         }
