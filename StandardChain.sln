@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardChain", "StandardChain\StandardChain.csproj", "{CF1E09FB-AA1F-4947-8718-5E7929666894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardChain", "StandardChain\StandardChain.csproj", "{CF1E09FB-AA1F-4947-8718-5E7929666894}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardChain.Tests", "StandardChain.Tests\StandardChain.Tests.csproj", "{D664ED5D-8255-4FB9-9610-C5327275A88E}"
 EndProject

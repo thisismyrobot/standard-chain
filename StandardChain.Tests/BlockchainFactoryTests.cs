@@ -1,10 +1,8 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StandardChain.Exceptions;
-using StandardChain.Serialisation;
 using StandardChain.Tests.TestClasses;
 
-namespace StandardChain.Tests.Serialisation
+namespace StandardChain.Tests
 {
     [TestClass]
     public class BlockchainFactoryTests
@@ -53,7 +51,12 @@ namespace StandardChain.Tests.Serialisation
 
         private Blockchain<T> GivenABlockchainFrom<T>(string serialisedJson)
         {
-            return BlockchainFactory<T>.FromJson(serialisedJson, GivenAHashAlgorithm());
+            return GivenABlockchainFactory<T>().FromJson(serialisedJson, GivenAHashAlgorithm());
+        }
+
+        private static BlockchainFactory<T> GivenABlockchainFactory<T>()
+        {
+            return new BlockchainFactory<T>();
         }
 
         private HashAlgorithm GivenAHashAlgorithm()

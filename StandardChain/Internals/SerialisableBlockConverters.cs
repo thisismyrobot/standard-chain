@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StandardChain.Serialisation
+namespace StandardChain
 {
     internal static class SerialisableBlockConverters<T>
     {
@@ -10,7 +10,7 @@ namespace StandardChain.Serialisation
 
             return new SerialisableBlock<T>(
                 block.Payload,
-                block.TimeStamp,
+                block.Timestamp,
                 block.PreviousHash.Value);
         }
 
@@ -20,7 +20,7 @@ namespace StandardChain.Serialisation
 
             return new Block<T>(
                 serialisableBlock.Payload,
-                serialisableBlock.TimeStamp,
+                serialisableBlock.Timestamp,
                 new BlockHash(serialisableBlock.PreviousHashValue));
         }
     }

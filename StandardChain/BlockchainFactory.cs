@@ -1,15 +1,14 @@
 ﻿using Newtonsoft.Json;
-using StandardChain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace StandardChain.Serialisation
+namespace StandardChain
 {
-    public static class BlockchainFactory<T>
+    public class BlockchainFactory<T>
     {
-        public static Blockchain<T> FromJson(string chainJson, HashAlgorithm hashAlgorithm)
+        public Blockchain<T> FromJson(string chainJson, HashAlgorithm hashAlgorithm)
         {
             if (string.IsNullOrWhiteSpace(chainJson)) throw new ArgumentException("Missing chain JSON", nameof(chainJson));
             if (hashAlgorithm == null) throw new ArgumentNullException(nameof(hashAlgorithm));

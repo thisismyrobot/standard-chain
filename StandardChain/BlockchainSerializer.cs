@@ -2,11 +2,11 @@
 using System;
 using System.Linq;
 
-namespace StandardChain.Serialisation
+namespace StandardChain
 {
-    public static class BlockchainSerialiser<T>
+    public class BlockchainSerializer<T>
     {
-        public static string Serialise(Blockchain<T> blockchain)
+        public string Serialize(Blockchain<T> blockchain)
         {
             if (blockchain == null) throw new ArgumentNullException(nameof(blockchain));
 

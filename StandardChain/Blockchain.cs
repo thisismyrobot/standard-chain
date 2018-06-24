@@ -1,6 +1,4 @@
-﻿using StandardChain.Exceptions;
-using StandardChain.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -27,15 +25,15 @@ namespace StandardChain
             _blockStack = new BlockStack<T>();
         }
 
-        public void AddBlock(T payload, DateTime timeStamp)
+        public void AddBlock(T payload, DateTime timestamp)
         {
             var previousHash = _blockStack.Empty ? BlockHash.FirstBlock : _blockStack.LastBlock.Hash(_hashAlgorithm);
-            var block = new Block<T>(payload, timeStamp, previousHash);
+            var block = new Block<T>(payload, timestamp, previousHash);
 
             _blockStack.AddBlock(block);
         }
 
-        public bool IsAuthorative(Blockchain<T> candidate)
+        public bool IsAuthoritative(Blockchain<T> candidate)
         {
             if (candidate == null) throw new ArgumentNullException(nameof(candidate));
 
@@ -55,7 +53,7 @@ namespace StandardChain
             var expectedPreviousHash = Empty ? BlockHash.FirstBlock : LastBlockHash;
             if (!block.PreviousHash.Equals(expectedPreviousHash)) throw new InvalidBlockException();
 
-            AddBlock(block.Payload, block.TimeStamp);
+            AddBlock(block.Payload, block.Timestamp);
         }
     }
 }

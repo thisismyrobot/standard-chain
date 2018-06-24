@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace StandardChain.Interfaces
+namespace StandardChain
 {
     public interface IBlockchainRecord<T>
     {
-        DateTime TimeStamp { get; }
+        DateTime Timestamp { get; }
         T Payload { get; }
     }
 }
