@@ -30,10 +30,11 @@ namespace StandardChain.Tests
 
         #region Givens
 
-        // BlockHash cannot be externally constructed, is still visible.
-        public BlockHash GivenBlockHashFrom(string value)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        public static BlockHash GivenBlockHashFrom(string value)
         {
-            return new Blockchain<string>(SHA512.Create())
+            // BlockHash cannot be externally constructed, is still visible.
+            return new Blockchain<string>(MD5.Create())
                 .AddBlock(value, DateTime.MinValue)
                 .LastBlockHash;
         }

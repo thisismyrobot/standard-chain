@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StandardChain.Tests.TestClasses;
 
 namespace StandardChain.Tests
 {
@@ -32,12 +31,12 @@ namespace StandardChain.Tests
             return new BlockchainSerialiser<T>();
         }
 
-        private Blockchain<T> GivenABlockchain<T>()
+        private static Blockchain<T> GivenABlockchain<T>()
         {
             return new Blockchain<T>(GivenAHashAlgorithm());
         }
 
-        private TestTransaction GivenATransactionToStore(decimal amount, string purchaser)
+        private static TestTransaction GivenATransactionToStore(decimal amount, string purchaser)
         {
             return new TestTransaction
             {
@@ -46,7 +45,7 @@ namespace StandardChain.Tests
             };
         }
 
-        private HashAlgorithm GivenAHashAlgorithm()
+        private static HashAlgorithm GivenAHashAlgorithm()
         {
             return MD5.Create();
         }

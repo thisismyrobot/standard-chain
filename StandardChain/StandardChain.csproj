@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
-    <CodeAnalysisRuleSet>CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\SolutionItems\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisCulture>en-AU</CodeAnalysisCulture>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -14,7 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CodeAnalysisDictionary Include="CodeAnalysisDictionary.xml" />
+    <CodeAnalysisDictionary Include="..\SolutionItems\CodeAnalysisDictionary.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SolutionItems\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
   </ItemGroup>
 
   <ItemGroup>

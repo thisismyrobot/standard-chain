@@ -1,4 +1,4 @@
-﻿namespace StandardChain.Tests.TestClasses
+﻿namespace StandardChain.Tests
 {
     public class TestTransaction
     {

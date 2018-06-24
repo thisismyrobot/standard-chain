@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StandardChain.Tests.TestClasses;
 
 namespace StandardChain.Tests
 {
@@ -43,13 +42,13 @@ namespace StandardChain.Tests
 
             Assert.ThrowsException<InvalidBlockException>(() =>
             {
-                var blockChain = GivenABlockchainFrom<int>(invalidJson);
+                GivenABlockchainFrom<int>(invalidJson);
             });
         }
 
         #region Givens
 
-        private Blockchain<T> GivenABlockchainFrom<T>(string serialisedJson)
+        private static Blockchain<T> GivenABlockchainFrom<T>(string serialisedJson)
         {
             return GivenABlockchainFactory<T>().FromJson(serialisedJson, GivenAHashAlgorithm());
         }
@@ -59,7 +58,7 @@ namespace StandardChain.Tests
             return new BlockchainFactory<T>();
         }
 
-        private HashAlgorithm GivenAHashAlgorithm()
+        private static HashAlgorithm GivenAHashAlgorithm()
         {
             return MD5.Create();
         }
