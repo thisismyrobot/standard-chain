@@ -28,5 +28,15 @@ namespace StandardChain
         {
             return EqualityComparer<string>.Default.GetHashCode(Value);
         }
+
+        public static bool operator ==(BlockHash first, BlockHash second)
+        {
+            return (first is null && second is null) || first?.Value == second?.Value;
+        }
+
+        public static bool operator !=(BlockHash first, BlockHash second)
+        {
+            return !(first == second);
+        }
     }
 }

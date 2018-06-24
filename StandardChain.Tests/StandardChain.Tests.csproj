@@ -48,6 +48,7 @@
     <Compile Include="BlockchainFactoryTests.cs" />
     <Compile Include="BlockchainSerialiserTests.cs" />
     <Compile Include="TestClasses\TestTransaction.cs" />
+    <Compile Include="BlockHashTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StandardChain\StandardChain.csproj">

@@ -27,12 +27,13 @@ namespace StandardChain
             _blockStack = new BlockStack<T>();
         }
 
-        public void AddBlock(T payload, DateTime timestamp)
+        public Blockchain<T> AddBlock(T payload, DateTime timestamp)
         {
             var previousHash = _blockStack.Empty ? BlockHash.FirstBlock : _blockStack.LastBlock.Hash(_hashAlgorithm);
             var block = new Block<T>(payload, timestamp, previousHash);
 
             _blockStack.AddBlock(block);
+            return this;
         }
 
         public bool IsAuthoritative(Blockchain<T> candidate)
