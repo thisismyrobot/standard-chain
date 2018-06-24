@@ -14,3 +14,6 @@ clients changing the workflow state of a single item.
 ## Consensus
 
 The consensus algorithm makes the longest blockchain the winner.
+
+AKA if someone has added a transaction to the central blockchain since you
+retrieved it, they win. You have to re-apply your transaction.

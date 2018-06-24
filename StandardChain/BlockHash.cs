@@ -5,17 +5,17 @@ namespace StandardChain
 {
     public class BlockHash
     {
-        public static BlockHash FirstBlock = new BlockHash("StandardChain");
+        internal static BlockHash FirstBlock = new BlockHash("StandardChain");
 
-        public string Value { get; }
+        internal string Value { get; }
 
-        public BlockHash(string hash)
+        internal BlockHash(string hash)
         {
             if (string.IsNullOrEmpty(hash)) throw new ArgumentException("Hash cannot be null or empty", nameof(hash));
             Value = hash.Replace("-", "");
         }
 
-        public BlockHash(byte[] hashBytes) : this(BitConverter.ToString(hashBytes))
+        internal BlockHash(byte[] hashBytes) : this(BitConverter.ToString(hashBytes))
         {
         }
 

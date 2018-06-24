@@ -47,21 +47,23 @@ namespace StandardChain
             }
         }
 
+        public bool IsAuthorative(Blockchain<T> candidate)
+        {
+            if (candidate == null) throw new ArgumentNullException(nameof(candidate));
+
+            if (Length > candidate.Length) return true;
+
+            if (Length == candidate.Length && candidate.LastBlockHash.Equals(LastBlockHash)) return true;
+
+            return false;
+        }
+
         public string Serialised()
         {
             var orderedBlocks = _blockStack
                 .InCreationOrder
                 .Select(SerialisableBlockConverters<T>.FromBlock);
             return JsonConvert.SerializeObject(orderedBlocks);
-        }
-
-        public bool IsAuthorative(Blockchain<T> candidate)
-        {
-            if (Length > candidate.Length) return true;
-
-            if (Length == candidate.Length && candidate.LastBlockHash.Equals(LastBlockHash)) return true;
-
-            return false;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace StandardChain
         public static Blockchain<T> FromJson(string chainJson, HashAlgorithm hashAlgorithm)
         {
             if (string.IsNullOrWhiteSpace(chainJson)) throw new ArgumentException("Missing chain JSON", nameof(chainJson));
+            if (hashAlgorithm == null) throw new ArgumentNullException(nameof(hashAlgorithm));
 
             var serialisedBlocks = JsonConvert.DeserializeObject<IReadOnlyList<SerialisableBlock<T>>>(chainJson);
             if (serialisedBlocks == null) throw new ArgumentException("Invalid chain JSON", nameof(chainJson));
