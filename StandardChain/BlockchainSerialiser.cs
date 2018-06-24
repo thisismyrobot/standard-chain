@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace StandardChain
 {
-    public class BlockchainSerializer<T>
+    public class BlockchainSerialiser<T>
     {
-        public string Serialize(Blockchain<T> blockchain)
+        public string Serialise(Blockchain<T> blockchain)
         {
             if (blockchain == null) throw new ArgumentNullException(nameof(blockchain));
 

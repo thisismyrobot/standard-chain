@@ -19,11 +19,6 @@ namespace StandardChain
             return FromBlockSequence(hashAlgorithm, serialisedBlocks);
         }
 
-        /// <summary>
-        /// Restore the blocks in order, checking that the resultant chain is the same as the serialised one.
-        /// </summary>
-        /// <param name="blockchain"></param>
-        /// <param name="serialisedBlocks"></param>
         private static Blockchain<T> FromBlockSequence(HashAlgorithm hashAlgorithm, IReadOnlyList<SerialisableBlock<T>> serialisedBlocks)
         {
             var blockchain = new Blockchain<T>(hashAlgorithm);

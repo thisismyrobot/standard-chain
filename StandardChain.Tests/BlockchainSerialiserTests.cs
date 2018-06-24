@@ -14,10 +14,10 @@ namespace StandardChain.Tests
             var transaction = GivenATransactionToStore(23.2m, "Robert");
             var blockChain = GivenABlockchain<TestTransaction>();
             blockChain.AddBlock(transaction, new DateTime(2017, 01, 01));
-            var blockchainSerializer = GivenABlockchainSerializer<TestTransaction>();
+            var blockchainSerialiser = GivenABlockchainSerialiser<TestTransaction>();
 
 
-            var jsonRepresentation = blockchainSerializer.Serialize(blockChain);
+            var jsonRepresentation = blockchainSerialiser.Serialise(blockChain);
 
 
             Assert.AreEqual(
@@ -27,9 +27,9 @@ namespace StandardChain.Tests
 
         #region Givens
 
-        private static BlockchainSerializer<T> GivenABlockchainSerializer<T>()
+        private static BlockchainSerialiser<T> GivenABlockchainSerialiser<T>()
         {
-            return new BlockchainSerializer<T>();
+            return new BlockchainSerialiser<T>();
         }
 
         private Blockchain<T> GivenABlockchain<T>()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -12,6 +13,7 @@ namespace StandardChain
 
         internal IReadOnlyList<Block<T>> BlocksInCreationOrder => _blockStack.InCreationOrder.ToArray();
 
+        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "Not sure of non-generic alternative")]
         public IReadOnlyList<IBlockchainRecord<T>> HistoryInCreationOrder => _blockStack.InCreationOrder.ToArray();
         public BlockHash LastBlockHash => _blockStack.LastBlock?.Hash(_hashAlgorithm);
         public int Length => _blockStack.Length;
