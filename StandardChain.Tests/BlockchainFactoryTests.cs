@@ -10,7 +10,7 @@ namespace StandardChain.Tests
         [TestMethod]
         public void TestBlockchainCanBeRestoredFromJson()
         {
-            var serialisedJson = "[{\"TimeStamp\":\"2017-01-01T00:00:00\",\"Payload\":{\"Amount\":23.2,\"Purchaser\":\"Robert\"},\"PreviousHashValue\":\"StandardChain\"}]";
+            var serialisedJson = "[{\"Timestamp\":\"2017-01-01T00:00:00\",\"Payload\":{\"Amount\":23.2,\"Purchaser\":\"Robert\"},\"PreviousHashValue\":\"StandardChain\"}]";
 
             var restoredBlockchain = GivenABlockchainFrom<TestTransaction>(serialisedJson);
 
@@ -24,17 +24,17 @@ namespace StandardChain.Tests
             const string invalidJson = @"
                 [
                   {
-                    ""TimeStamp"": ""2017-01-01T00:00:00"",
+                    ""Timestamp"": ""2017-01-01T00:00:00"",
                     ""Payload"": 1,
                     ""PreviousHashValue"": ""StandardChain""
                   },
                   {
-                    ""TimeStamp"": ""2017-01-02T00:00:00"",
+                    ""Timestamp"": ""2017-01-02T00:00:00"",
                     ""Payload"": 2,
                     ""PreviousHashValue"": ""4714DF86BEF51CE25E3F810A64F041D6""
                   },
                   {
-                    ""TimeStamp"": ""2017-01-03T00:00:00"",
+                    ""Timestamp"": ""2017-01-03T00:00:00"",
                     ""Payload"": 3,
                     ""PreviousHashValue"": ""******""
                   }
